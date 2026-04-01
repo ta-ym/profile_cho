@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "profile-app",
+    "name": "プロフィール帳",
     "slug": "profile-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,8 +8,10 @@
     "scheme": "profileapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "description": "人メモアプリ - プロフィール交換・管理アプリケーション",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.profileapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +21,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.example.profileapp"
     },
     "web": {
       "output": "static",
