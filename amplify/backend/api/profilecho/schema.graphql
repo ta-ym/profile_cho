@@ -1,0 +1,105 @@
+# プロフィール帳アプリ - GraphQL スキーマ
+# マルチデバイス同期対応
+
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+}
+
+type User
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+  birthday: String!
+  address: String!
+  job: String!
+  avatar_url: String
+  sharing_settings: String! 
+  contacts: [Contact] @hasMany(indexName: "byUserId", fields: ["id"])
+  categories: [Category] @hasMany(indexName: "byUserId", fields: ["id"])
+  notes: [FreeNote] @hasMany
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Contact
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  userId: ID! @index(name: "byUserId")
+  user: User @belongsTo(fields: ["userId"])
+  name: String!
+  email: String!
+  phone: String!
+  birthday: String!
+  address: String!
+  job: String!
+  avatar_url: String
+  profile_data: String! 
+  received_at: AWSDateTime!
+  shared_notes: String
+  categories: [Contact] @manyToMany(relationName: "ContactCategory")
+  notes: [FreeNote] @hasMany(indexName: "byContactId", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Category
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  userId: ID! @index(name: "byUserId")
+  user: User @belongsTo(fields: ["userId"])
+  name: String!
+  color: String!
+  contacts: [Contact] @manyToMany(relationName: "ContactCategory")
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type FreeNote
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  contactId: ID! @index(name: "byContactId")
+  contact: Contact @belongsTo(fields: ["contactId"])
+  note_text: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Theme
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  primary_color: String!
+  secondary_color: String!
+  accent_color: String!
+  background_color: String!
+  is_custom: Boolean!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
